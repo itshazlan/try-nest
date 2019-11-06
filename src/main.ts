@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
-import { ConfigService } from './config/config.service';
+import { ConfigReader } from 'neconfig';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -19,8 +19,8 @@ async function bootstrap() {
   app.use(bodyParser.urlencoded({ verify: rawBodyBuffer, extended: true }));
   app.use(bodyParser.json({ verify: rawBodyBuffer }));
 
-  const config = app.get(ConfigService);
-  const port = config.get('PORT');
+  const config = app.get(ConfigReader);
+  const port = config.getIntOrThrow('PORT');
 
   await app.listen(port);
   console.log('Listening on: ', port)
