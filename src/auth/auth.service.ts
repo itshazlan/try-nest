@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from '../users/dto/login-user.dto';
 import { UsersService } from '../users/users.service';
@@ -9,20 +9,20 @@ export class AuthService {
 
     constructor(private usersService: UsersService, private jwtService: JwtService){ }
 
-    async validateUserByPassword(loginAttempt: LoginUserDto, res) {
+    async validateUserByPassword(loginAttempt: LoginUserDto): Promise<any> {
         let userToAttempt: any = await this.usersService.findOneByEmail(loginAttempt.email);
-        if (!userToAttempt) {
-            return res.status(HttpStatus.UNAUTHORIZED).json({msg: 'User not found'});
-        }
 
         return new Promise((resolve) => {
+            if (!userToAttempt) {
+                resolve({success: false, msg: 'User not found'});
+            }
             userToAttempt.checkPassword(loginAttempt.password, (err, isMatch) => {
-                if(err) throw new UnauthorizedException();
+                if(err) resolve({success: false, msg: 'Unexpected error. Please try again later.'});
     
                 if(isMatch){
-                    resolve(this.createJwtPayload(userToAttempt));
+                    resolve({success: true, data: this.createJwtPayload(userToAttempt)});
                 } else {
-                    return res.status(HttpStatus.UNAUTHORIZED).json({msg: 'Wrong password'});
+                    resolve({success: false, msg: 'Wrong password'})
                 }
             });
         });

@@ -16,6 +16,7 @@ export const UserSchema = new mongoose.Schema({
         select: false
     },
     avatar: String,
+    bio: String
 }, {
   timestamps: true
 });
