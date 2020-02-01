@@ -6,6 +6,9 @@ import { ConfigService } from './config/config.service';
 import { AuthModule } from './auth/auth.module';
 import * as path from 'path';
 import { NeconfigModule } from 'neconfig';
+import { CustomerModule } from './customer/customer.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -21,12 +24,14 @@ import { NeconfigModule } from 'neconfig';
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get('MONGODB_URI'),
         useNewUrlParser: true,
+        useFindAndModify: false
       }),
       inject: [ConfigService],
     }),
     AuthModule,
+    CustomerModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

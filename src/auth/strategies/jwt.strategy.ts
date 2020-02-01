@@ -8,16 +8,16 @@ import { JwtPayload } from '../interfaces/jwt-payload.interface';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
-    constructor(private authService: AuthService, private configService: ConfigService){
+    constructor(private authService: AuthService, private configService: ConfigService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKeyProvider: (request, jwtToken, done) => {
                 done(null, configService.get('JWT_SECRET'));
-              },
+            },
         });
     }
 
-    async validate(payload: JwtPayload){
+    async validate(payload: JwtPayload) {
         const user = await this.authService.validateUser(payload);
 
         if (!user) {

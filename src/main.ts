@@ -23,6 +23,6 @@ async function bootstrap() {
   const port = config.getIntOrThrow('PORT');
 
   await app.listen(port);
-  console.log('Listening on: ', port)
+  console.log('Listening on: ', port);
 }
 bootstrap();

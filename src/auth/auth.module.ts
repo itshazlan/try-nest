@@ -24,4 +24,4 @@ import { ConfigModule } from '../config/config.module';
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController]
 })
-export class AuthModule {}
+export class AuthModule { }

@@ -18,39 +18,40 @@ export const UserSchema = new mongoose.Schema({
     avatar: String,
     bio: String
 }, {
-  timestamps: true
+    timestamps: true,
+    versionKey: false
 });
 
-UserSchema.pre('save', function(next){
+UserSchema.pre('save', function (next) {
 
     let user: any = this;
 
     // Set Gravatar image
     if (!user.avatar) {
-      user.avatar = gravatar.url(user.email, {protocol: 'https'});
+        user.avatar = gravatar.url(user.email, { protocol: 'https' });
     }
 
     // Make sure not to rehash the password if it is already hashed
-    if(!user.isModified('password')) return next();
+    if (!user.isModified('password')) return next();
 
     // Generate a salt and use it to hash the user's password
     bcrypt.genSalt(10, (err, salt) => {
-        if(err) return next(err);
+        if (err) return next(err);
 
         bcrypt.hash(user.password, salt, (err, hash) => {
 
-            if(err) return next(err);
+            if (err) return next(err);
             user.password = hash;
             next();
         });
     });
-}); 
+});
 
-UserSchema.methods.checkPassword = function(attempt, callback){
+UserSchema.methods.checkPassword = function (attempt, callback) {
     let user = this;
 
     bcrypt.compare(attempt, user.password, (err, isMatch) => {
-        if(err) return callback(err);
+        if (err) return callback(err);
         callback(null, isMatch);
     });
 };
