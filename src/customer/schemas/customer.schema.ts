@@ -6,6 +6,8 @@ export const CustomerSchema = new mongoose.Schema({
     email: String,
     phone: String,
     address: String,
-    description: String,
-    created_at: { type: Date, default: Date.now }
+    description: String
+}, {
+    timestamps: true,
+    versionKey: false
 });

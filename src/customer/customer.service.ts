@@ -17,6 +17,7 @@ export class CustomerService {
 
     // Get a single customer
     async getCustomer(customerID): Promise<Customer> {
+        console.log('id (service)-- ', JSON.stringify(customerID));
         const customer = await this.customerModel.findById(customerID).exec();
         return customer;
     }
@@ -24,7 +25,7 @@ export class CustomerService {
     // Post a single customer
     async addCustomer(createCustomerDto: CreateCustomerDto): Promise<Customer> {
         const newCustomer = new this.customerModel(createCustomerDto);
-        return newCustomer;
+        return newCustomer.save();
     }
 
     // Edit customer details

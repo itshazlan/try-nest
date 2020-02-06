@@ -7,5 +7,4 @@ export interface Customer extends Document {
     readonly phone: string;
     readonly address: string;
     readonly description: string;
-    readonly created_at: Date;
 }

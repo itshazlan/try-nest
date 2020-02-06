@@ -24,7 +24,9 @@ import { AppService } from './app.service';
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get('MONGODB_URI'),
         useNewUrlParser: true,
-        useFindAndModify: false
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+        useCreateIndex: true
       }),
       inject: [ConfigService],
     }),
